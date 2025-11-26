@@ -39,11 +39,12 @@ export default function () {
   let duration = new Date().getTime() - startTime;
   responseTime.add(duration);
 
-  check(response, {
+  const check1 = check(response, {
     "homepage accessible": (r) => r.status === 200,
     "homepage not too slow": (r) => r.timings.duration < 5000,
-  }) || errorRate.add(1);
+  });
 
+  errorRate.add(!check1);
   if (response.status === 200) {
     successfulRequests.add(1);
   }
@@ -55,7 +56,7 @@ export default function () {
     timeout: "10s",
   });
 
-  check(response, {
+  const check2 = check(response, {
     "breeds API works": (r) => r.status === 200,
     "breeds data valid": (r) => {
       try {
@@ -65,8 +66,9 @@ export default function () {
         return false;
       }
     },
-  }) || errorRate.add(1);
+  });
 
+  errorRate.add(!check2);
   if (response.status === 200) {
     successfulRequests.add(1);
   }
@@ -78,7 +80,7 @@ export default function () {
     timeout: "10s",
   });
 
-  check(response, {
+  const check3 = check(response, {
     "random dog API works": (r) => r.status === 200,
     "has dog image URL": (r) => {
       try {
@@ -88,8 +90,9 @@ export default function () {
         return false;
       }
     },
-  }) || errorRate.add(1);
+  });
 
+  errorRate.add(!check3);
   if (response.status === 200) {
     successfulRequests.add(1);
   }
@@ -104,10 +107,11 @@ export default function () {
     timeout: "10s",
   });
 
-  check(response, {
+  const check4 = check(response, {
     "breed-specific API works": (r) => r.status === 200,
-  }) || errorRate.add(1);
+  });
 
+  errorRate.add(!check4);
   if (response.status === 200) {
     successfulRequests.add(1);
   }

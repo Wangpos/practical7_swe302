@@ -45,7 +45,7 @@ export default function () {
   });
 
   successRate.add(success1);
-  if (!success1) errorRate.add(1);
+  errorRate.add(!success1);
   totalRequests.add(1);
   sleep(3); // Realistic user reading time
 
@@ -70,7 +70,7 @@ export default function () {
   });
 
   successRate.add(success2);
-  if (!success2) errorRate.add(1);
+  errorRate.add(!success2);
   totalRequests.add(1);
   sleep(2);
 
@@ -95,7 +95,7 @@ export default function () {
   });
 
   successRate.add(success3);
-  if (!success3) errorRate.add(1);
+  errorRate.add(!success3);
   totalRequests.add(1);
   sleep(4); // User enjoys the dog picture
 
@@ -126,7 +126,7 @@ export default function () {
     });
 
     successRate.add(success4);
-    if (!success4) errorRate.add(1);
+    errorRate.add(!success4);
     totalRequests.add(1);
     sleep(3);
   }

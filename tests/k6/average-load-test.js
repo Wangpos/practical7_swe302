@@ -28,16 +28,17 @@ export default function () {
 
   // 1. Visit homepage
   let response = http.get(BASE_URL);
-  check(response, {
+  const check1 = check(response, {
     "homepage status is 200": (r) => r.status === 200,
     "homepage loads quickly": (r) => r.timings.duration < 2000,
-  }) || errorRate.add(1);
+  });
+  errorRate.add(!check1);
   totalRequests.add(1);
   sleep(2); // User reads the page
 
   // 2. Fetch breeds list
   response = http.get(`${BASE_URL}/api/dogs/breeds`);
-  check(response, {
+  const check2 = check(response, {
     "breeds status is 200": (r) => r.status === 200,
     "breeds has data": (r) => {
       try {
@@ -47,7 +48,8 @@ export default function () {
         return false;
       }
     },
-  }) || errorRate.add(1);
+  });
+  errorRate.add(!check2);
   totalRequests.add(1);
   sleep(1);
 
@@ -57,7 +59,7 @@ export default function () {
   const duration = new Date().getTime() - start;
   dogFetchTime.add(duration);
 
-  check(response, {
+  const check3 = check(response, {
     "random dog status is 200": (r) => r.status === 200,
     "random dog has message": (r) => {
       try {
@@ -67,7 +69,8 @@ export default function () {
         return false;
       }
     },
-  }) || errorRate.add(1);
+  });
+  errorRate.add(!check3);
   totalRequests.add(1);
   sleep(3); // User views the dog image
 
@@ -84,7 +87,7 @@ export default function () {
   const randomBreed = breeds[Math.floor(Math.random() * breeds.length)];
   response = http.get(`${BASE_URL}/api/dogs?breed=${randomBreed}`);
 
-  check(response, {
+  const check4 = check(response, {
     "specific breed status is 200": (r) => r.status === 200,
     "specific breed has message": (r) => {
       try {
@@ -94,7 +97,8 @@ export default function () {
         return false;
       }
     },
-  }) || errorRate.add(1);
+  });
+  errorRate.add(!check4);
   totalRequests.add(1);
   sleep(2); // User views the breed-specific image
 }

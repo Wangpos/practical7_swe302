@@ -29,9 +29,10 @@ export default function () {
 
   // 1. Homepage
   let response = http.get(BASE_URL);
-  check(response, {
+  const check1 = check(response, {
     "homepage responds": (r) => r.status === 200 || r.status === 503, // Accept 503 during spike
-  }) || errorRate.add(1);
+  });
+  errorRate.add(!check1);
 
   if (response.status !== 200) {
     failedRequests.add(1);
@@ -41,10 +42,11 @@ export default function () {
 
   // 2. Random dog API
   response = http.get(`${BASE_URL}/api/dogs`);
-  check(response, {
+  const check2 = check(response, {
     "dog API responds": (r) => r.status === 200 || r.status === 503,
     "response time reasonable": (r) => r.timings.duration < 5000, // 5s max during spike
-  }) || errorRate.add(1);
+  });
+  errorRate.add(!check2);
 
   if (response.status !== 200) {
     failedRequests.add(1);
@@ -56,9 +58,10 @@ export default function () {
   if (Math.random() < 0.5) {
     // Only 50% of users fetch breeds during spike
     response = http.get(`${BASE_URL}/api/dogs/breeds`);
-    check(response, {
+    const check3 = check(response, {
       "breeds API responds": (r) => r.status === 200 || r.status === 503,
-    }) || errorRate.add(1);
+    });
+    errorRate.add(!check3);
 
     if (response.status !== 200) {
       failedRequests.add(1);
